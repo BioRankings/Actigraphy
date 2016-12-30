@@ -1,0 +1,13 @@
+Package: Actigraphy
+Type: Package
+Title: Actigraphy Data Analysis
+Version: 1.3.2
+Date: 2016-01-14
+Author: William Shannon, Tao Li, Hong Xian, Jia Wang, Elena Deych, Carlos Gonzalez
+Maintainer: Berkley Shands <rpackages@biorankings.com>
+Depends: R (>= 2.14.0), fda
+Imports: SDMTools
+Suggests: lattice
+Description: Functional linear modeling and analysis for actigraphy data. 
+License: Apache License (== 2.0)
+LazyLoad: yes
