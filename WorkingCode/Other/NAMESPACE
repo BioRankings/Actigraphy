@@ -1,0 +1,5 @@
+exportPattern("^[[:alpha:]]+")
+import("fda")
+importFrom("grDevices", "topo.colors")
+importFrom("graphics", "abline", "axis", "hist", "legend", "lines", "par", "plot")
+importFrom("stats", "median", "model.matrix", "predict", "quantile")

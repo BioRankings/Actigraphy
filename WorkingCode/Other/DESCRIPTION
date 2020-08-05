@@ -1,0 +1,12 @@
+Package: Actigraphy
+Type: Package
+Title: Actigraphy Data Analysis
+Version: 1.4.0
+Date: 2020-01-31
+Author: William Shannon, Tao Li, Hong Xian, Jia Wang, Elena Deych, Carlos Gonzalez
+Maintainer: Berkley Shands <rpackages@biorankings.com>
+Depends: R (>= 3.1.0), fda
+Suggests: lattice
+Description: Functional linear modeling and analysis for actigraphy data. 
+License: Apache License (== 2.0)
+LazyLoad: yes
