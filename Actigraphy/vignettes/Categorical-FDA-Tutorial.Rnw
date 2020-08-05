@@ -27,17 +27,7 @@ covariate and activity:
 @
 
 
-3. Remove any NAs in the covariate file and fix the column names in our activity
-file so they match the covariate dataset (We remove the first column of activity
-because it is an unnecessary time variable):
-<<>>=
-	covariate <- na.omit(covariate)
-	activity <- as.matrix(activity[,-1])
-	colnames(activity) <- sub("X", "", colnames(activity))
-@
-
-
-4. Change the continious variable AHI in the covariate file into a categorical
+3. Change the continious variable AHI in the covariate file into a categorical
 variable:
 <<>>=
 	covariate$ahicat <- as.factor(
@@ -48,31 +38,31 @@ variable:
 @
 
 
-5. Match the data in the activity and covariate datasets and since the covariate
+4. Match the data in the activity and covariate datasets and since the covariate
 is a factor, apply user-defined category labels:
 <<>>=
 	matchid <- fda.matchid(activity, covariate[,-2], "factor", c("normal", "mild", "moderate", "severe"))
 @
 
 
-6. Smooth the data and plot it:
+5. Smooth the data and plot it:
 \begin{itemize}
   \item L is the number of entries in the activity file
 \end{itemize}
 <<results=hide>>=
 	L <- nrow(activity)
 	FDinterest <- fda.smoothdata(matchid)
-	ts.plot(predict(FDinterest$fd$fd, c(1:L)), main="Smoothed Activity Data")
+	ts.plot(predict(FDinterest$fd$fd, 1:L), main="Smoothed Activity Data")
 @
 
 
-7. Apply FLM to the data with the \texttt{flm\_cate} function:
+6. Apply FLM to the data with the \texttt{flm\_cate} function:
 <<>>=
 	geftinterest <- flm_cate(FDinterest)
 @
 
 
-8. Set up the plot parameters for the next step:
+7. Set up the plot parameters for the next step:
 \begin{itemize}
   \item ylim is a vector of length 2 that contains the Y-axis boundries based on the results on the \texttt{flm\_cate} function
   \item lb is a vector of labels for the X-axis
@@ -86,7 +76,7 @@ is a factor, apply user-defined category labels:
 @
 
 
-9. Plot results from FLM results and F-test if indicated (with the categorical
+8. Plot results from FLM results and F-test if indicated (with the categorical
 flm plotting function):
 <<results=hide>>=
 	cat.flm.results <- cat_flm_plot(FDinterest, matchid, geftinterest, TRUE, 5, lb, xat, "AHI", 1:4, ylim, L)

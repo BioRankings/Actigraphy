@@ -34,7 +34,7 @@ First we need to load the \texttt{Actigraphy} package:
 	xat <- c(0, L/4, L/2, 3*L/4, L) 
 	
 	### Plot Figure 
-	xyplot(act ~ t | date, data=data2, as.table=TRUE, 
+	lattice::xyplot(act ~ t | date, data=data2, as.table=TRUE, 
 		main="Subject 002 Activity from Monday to Friday", 
 		scales=list(x=list(at=xat, labels=lb)), cex.main=0.5, 
 		layout=c(1, 5, 1), xlim=c(0, L), xlab="(a)", 
@@ -58,7 +58,7 @@ First we need to load the \texttt{Actigraphy} package:
 	L <- 1440 
 	xat <- c(0, L/4, L/2, 3*L/4, L) 
 	
-	matchid <- fda.matchid(act_8pt[,-1], clinic_8pt, type="factor", grouplab=c("AHI", "NO AHI")) 
+	matchid <- fda.matchid(act_8pt, clinic_8pt, type="factor", grouplab=c("AHI", "NO AHI")) 
 	idhigh <- paste("Subj", colnames(matchid$mat)[matchid$cov$"NO AHI" != 1]) 
 	idlow <- paste("Subj", colnames(matchid$mat)[matchid$cov$"NO AHI" == 1]) 
 	idorder <- c(idhigh, idlow) 
@@ -66,11 +66,11 @@ First we need to load the \texttt{Actigraphy} package:
 	datavec <- matchid$mat 
 	dim(datavec) <- NULL
 	
-	datanew <- data.frame(y=datavec, id=rep(paste("Subj", colnames(matchid$mat)), each=L), t=rep(c(1:L), 8)) 
+	datanew <- data.frame(y=datavec, id=rep(paste("Subj", colnames(matchid$mat)), each=L), t=rep(1:L, 8)) 
 	datanew$id <- factor(datanew$id, idorder) 
 	
 	### Plot Figure 
-	xyplot(y~t|id, data=datanew, as.table=TRUE, 
+	lattice::xyplot(y~t|id, data=datanew, as.table=TRUE, 
 		main="Circadian Activity from 8 Subjects", 
 		ylab="Activity", xlab="", cex.main=.7, 
 		scales=list(x=list(at=xat, labels=lb)), cex=.05, 
@@ -78,9 +78,9 @@ First we need to load the \texttt{Actigraphy} package:
 		xlim=c(0, L), panel=function(x,y) { 
 			fbase <- create.fourier.basis(rangeval=c(0, L), nbasis=9) 
 			fpar <- fdPar(fbase) 
-			sm <- smooth.basis(c(1:L), y, fpar) 
+			sm <- smooth.basis(1:L, y, fpar) 
 			panel.xyplot(x, y, col=1, cex=0.1) 
-			panel.lines(predict(sm$fd,c(1:L)), col=2, lwd=3) 
+			panel.lines(predict(sm$fd, 1:L), col=2, lwd=3) 
 		}) 
 @
 
@@ -91,7 +91,7 @@ First we need to load the \texttt{Actigraphy} package:
 	data(act_8pt) 
 	data(clinic_8pt) 
 	
-	ahidatav2 <- fda.matchid(act_8pt[,-1], clinic_8pt, type="factor", grouplab=c("AHI", "NO AHI")) 
+	ahidatav2 <- fda.matchid(act_8pt, clinic_8pt, type="factor", grouplab=c("AHI", "NO AHI")) 
 	tempv2 <- ahidatav2[[2]] 
 	tempv2[,3] <- ifelse(tempv2[,3] == 0, -1, 1) 
 	ahidatav2$cov <- data.frame(id=tempv2$id, mean=1, ahi=tempv2[,3]) 
@@ -108,11 +108,11 @@ First we need to load the \texttt{Actigraphy} package:
 	lb <- c("Midnight", "6AM", "Noon", "6PM", "Midnight") 
 	
 	### Plot Figure 
-	par(mfrow=c(2,1), mar=c(4,4,3,1)) 
-	plot(0, 0, xlim=c(0,L), ylim=c(0,1200), xaxt="n", xlab="(a)", ylab="Acitivity", type="n", main="Circadian Activity Curves of 8 Subjects") 
+	par(mfrow=c(2, 1), mar=c(4, 4, 3, 1)) 
+	plot(0, 0, xlim=c(0, L), ylim=c(0, 1200), xaxt="n", xlab="(a)", ylab="Acitivity", type="n", main="Circadian Activity Curves of 8 Subjects") 
 	
 	for(i in 1:8)
-		lines(predict(smoothDatav2$fd$fd, c(1:L))[,i], col=colv2[i]) 
+		lines(predict(smoothDatav2$fd$fd, 1:L)[,i], col=colv2[i]) 
 	
 	### Plot the group mean activities 
 	lines(meanefv2$fd-ahiefv2$fd, col=4, lwd=3) 
@@ -146,12 +146,12 @@ First we need to load the \texttt{Actigraphy} package:
 		betalist[[i]] <- fpar 
 
 	freg2 <- fRegress(fd$fd, xfdlist, betalist) 
-	preact2 <- predict(freg2$yhatfdobj, c(1:L)) 
+	preact2 <- predict(freg2$yhatfdobj, 1:L) 
 	resid2 <- fd$y - preact2[, 1:npt] 
 	sigma2 <- cov(t(resid2)) 
 	fregstd2 <- fRegress.stderr(freg2, fd$y2cMap, sigma2) 
 	
-	Fratio <- Ftest(fd$fd, xfdlist, betalist, argvals = c(1:1440),  nperm=10, xaxt="n") 
+	Fratio <- Ftest(fd$fd, xfdlist, betalist, argvals=1:1440,  nperm=10, xaxt="n") 
 	axis(1, at=xat, labels=lb) 
 @
 

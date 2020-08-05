@@ -33,10 +33,10 @@
 	data(act_29pt)
 	data(clinic_29pt_ahi)
 	
-	colnames(act_29pt) <- sub("X", "", colnames(act_29pt)) 
-	data <- as.matrix(act_29pt[,-1])
+	data <- act_29pt
+	ahi <- clinic_29pt_ahi
 	
-	matchid  <- fda.matchid(data, clinic_29pt_ahi, "contin")
+	matchid  <- fda.matchid(data, ahi, "contin")
 	FDcont <- fda.smoothdata(matchid)
 	
 	L <- nrow(data)
@@ -53,5 +53,5 @@
 	legendy <- max(predy) - 100
 	
 	cont.flm.results <- cont_flm_plot(FDcont, matchid, geftFDcont, xlim, 
-		ylim, TRUE, 10, lb, xat, legendx, legendy, L)
+			ylim, TRUE, 10, lb, xat, legendx, legendy, L)
 }

@@ -7,9 +7,9 @@
 \usage{data(act_8pt)}
 
 \format{
-	A data frame that consists of nine columns; the first column refers to the time
-	indices of one day by minute from midnight to midnight. The following eight columns contain 
-	the actigraph data of eight subjects with column names being the subject IDs.
+	A data frame in which each column contains the actigraph data of a subject with 
+	column names being the subject IDs. The row names are the time indices of one 
+	day by minute from midnight to midnight. 
 }
 
 \keyword{datasets}

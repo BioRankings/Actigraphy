@@ -27,40 +27,30 @@ covariate and activity:
 @
 
 
-3. Remove any NAs in the covariate file and fix the column names in our activity
-file so they match the covariate dataset (We remove the first column of activity
-because it is an unnecessary time variable):
-<<>>=
-	covariate <- na.omit(covariate)
-	activity <- as.matrix(activity[,-1])
-	colnames(activity) <- sub("X", "", colnames(activity))
-@
-
-
-4. Match the data in the activity and covariate datasets:
+3. Match the data in the activity and covariate datasets:
 <<>>=
 	matchid <- fda.matchid(activity, covariate, "contin")
 @
 
 
-5. Smooth the data and plot it:
+4. Smooth the data and plot it:
 \begin{itemize}
   \item L is the number of entries in the activity file
 \end{itemize}
 <<results=hide>>=
 	L <- nrow(activity)
 	FDinterest <- fda.smoothdata(matchid)
-	ts.plot(predict(FDinterest$fd$fd, c(1:L)), main="Smoothed Activity Data")
+	ts.plot(predict(FDinterest$fd$fd, 1:L), main="Smoothed Activity Data")
 @
 
 
-6. Apply FLM to the data with the \texttt{flm\_cate} function:
+5. Apply FLM to the data with the \texttt{flm\_cate} function:
 <<>>=
 	geftFDcont <- flm_cate(FDinterest)
 @
 
 
-7. Set up the plot parameters for the next step:
+6. Set up the plot parameters for the next step:
 \begin{itemize}
   \item xlim is a vector of length 2 that contains the X-axis boundries based on
     the time span of the activity data
@@ -84,7 +74,7 @@ because it is an unnecessary time variable):
 @
 
 
-8. Plot results from FLM results and F-test if indicated (with the continuous
+7. Plot results from FLM results and F-test if indicated (with the continuous
 flm plotting function):
 <<results=hide>>=
 	cont.flm.results <- cont_flm_plot(FDinterest, matchid, geftFDcont, xlim, ylim, TRUE, 10, lb, xat, legendx, legendy, L)
